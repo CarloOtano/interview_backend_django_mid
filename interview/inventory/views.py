@@ -33,7 +33,17 @@ class InventoryListCreateView(APIView):
     
     def get_queryset(self):
         return self.queryset.all()
+
+
+class InventoryListCreatedAfterDateView(APIView):
+    serializer_class = InventorySerializer
     
+    def get(self, request: Request, *args, **kwargs) -> Response:
+        inventory = Inventory.get_after_created_date(kwargs['date'])
+        serializer = self.serializer_class(inventory, many=True)
+
+        return Response(serializer.data, status=200)
+
 
 class InventoryRetrieveUpdateDestroyView(APIView):
     queryset = Inventory.objects.all()

@@ -1,4 +1,8 @@
+from datetime import datetime, date
+import pytz
+
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.timezone import make_aware
 from django.db import models
 
 
@@ -22,6 +26,15 @@ class TimestampedModel(models.Model):
 
     class Meta:
         abstract = True
+
+    @classmethod
+    def get_after_created_date(cls, dateStr: str) -> date:
+        # More data formats can be supported
+        afterDate = make_aware(
+            datetime.strptime(dateStr, '%Y-%m-%d'),
+            timezone=pytz.timezone('US/Eastern'))
+        
+        return cls.objects.filter(created_at__gte=afterDate)
 
 
 class IsActiveModel(models.Model):
