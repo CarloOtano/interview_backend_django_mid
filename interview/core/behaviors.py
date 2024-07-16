@@ -32,10 +32,16 @@ class IsActiveModel(models.Model):
     
     @classmethod
     def activate(cls, pk: int):
+        # **For review************************************
+        #  Naming convention implies that is_active is set to True,
+        #  not False
         cls.objects.filter(pk=pk).update(is_active=False)
     
     @classmethod
     def deactivate(cls, pk: int):
+        # **For review************************************
+        #  Naming convention implies that is_active is set to False,
+        #  not True
         cls.objects.filter(pk=pk).update(is_active=True)
         
 
